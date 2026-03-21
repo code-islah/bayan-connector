@@ -12,6 +12,7 @@ const Home = () => {
   const [viewPost, setViewPost] = useState(null);
   const [viewComment, setViewComment] = useState(null);
   const [viewEmoji, setViewEmoji] = useState(null);
+  const [refreshPosts, setRefreshPosts] = useState(false);
   
   useEffect(()=>{
      const fetchPosts = async() => {
@@ -23,7 +24,7 @@ const Home = () => {
       }
      } 
      fetchPosts();
-  },[]);
+  },[refreshPosts]);
   
    
 
@@ -40,6 +41,7 @@ const Home = () => {
             id={viewComment}
             closeComment={() => {
               setViewComment(null);
+              setRefreshPosts(prev => !prev);
             }}
           />
         </div>
