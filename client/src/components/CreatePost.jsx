@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import {UserContext} from "../context/UserContext.jsx";
+import axios from "../API/axios.js";
 
-const CreatePost = () => {
+const CreatePost = ({onPostCreated}) => {
   const [openModal, setOpenModal] = useState(false);
   const [county, setCounty] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingOnSubmit, setLoadingSubmit] = useState(false);
   const [emoji, setEmoji] = useState("");
-
+  const [image, setImage] = useState(null);
+  const [content, setContent] = useState("");
+  
+  
   function getCounty() {
     setLoading(true);
     navigator.geolocation.getCurrentPosition(
@@ -41,18 +47,55 @@ const CreatePost = () => {
     { name: "Sad", emoji: "😢" },
     { name: "Angry", emoji: "😡" },
   ];
+  
+  
+   const handleSubmit = async(e) => {
+   
+     e.preventDefault();
+     setLoadingSubmit(true);
+     try{
+     const formData = new FormData();
+     formData.append("content", content);
+     formData.append("county", county);
+     formData.append("emoji",emoji);
+     
+     if(image) {
+     formData.append("image", image);
+     }
+     
+     const token = localStorage.getItem("token");
+     
+     const res = await axios.post("/posts",formData, {
+     headers: {Authorization: "Bearer "+token}
+     });
+     
+     if(res.data.success) {
+     setContent("");
+     setImage(null);
+     onPostCreated(res.data.post);
+     setLoadingSubmit(false);
+     }} catch(err) {
+     console.log(err)
+     } 
+   }
 
   return (
-    <div className="relative h-[140px] p-2 grid mx-2 shadow-sm rounded">
+    <form
+    onSubmit={handleSubmit}
+    className="relative h-[140px] p-2 grid mx-2 shadow-sm rounded">
       <textarea
+        value={content}
         className="resize-none p-2 w-full my-2 h-[80px] bg-sec rounded text-dark"
         type="text"
-        placeholder="Share the Eloquence of Your Heart!"
+        placeholder="Share the Eloquence of Your Heart!" onChange={(e) => {
+          setContent(e.target.value);
+        }}
       ></textarea>
 
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
               setOpenModal((prev) => !prev);
@@ -84,11 +127,29 @@ const CreatePost = () => {
           </div>
 
           <button
+            type="button"
             onClick={() => {
               getCounty();
             }}
           >
             <img src="/SVGs/location.svg" alt="Location" className="w-6" />
+          </button>
+          
+          <button
+          type='button'
+          className="relative"
+          >
+          <img 
+          className="w-8"
+          src={!image ? "/SVGs/uploadIMG.svg": "/SVGs/uploaded.svg"}
+          alt="Upload" />
+          <input
+          onChange={(e) => {
+          setImage(e.target.files[0]);
+          }}
+          className="
+          max-w-[40px]
+          absolute opacity-0 border right-0 top-0 overflow-hidden z-1" type="file" />
           </button>
 
           {loading && (
@@ -106,12 +167,21 @@ const CreatePost = () => {
             </div>
           )}
         </div>
-        <button className="rounded px-5 py-1 bg-compYl text-dark">
-          <img className="w-6" src="/SVGs/send.svg" alt="Share" />
+        <button 
+        type="submit"
+        className="rounded px-5 py-1 bg-compYl text-dark">
+          <img
+          className="w-6"
+          src={`/SVGs/${loadingOnSubmit ? "spin.svg" : "send.svg"}`}
+          alt="Share" />
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
 export default CreatePost;
+
+
+
+

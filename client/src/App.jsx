@@ -30,9 +30,9 @@ function App() {
             <Route
               path="/settings"
               element={
-              <ProtectLoginRoute>
-              <Settings />
-              </ProtectLoginRoute>
+                <ProtectLoginRoute>
+                  <Settings />
+                </ProtectLoginRoute>
               }
             />
             <Route path="/login" element={<Login />} />

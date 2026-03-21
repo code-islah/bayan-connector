@@ -6,36 +6,36 @@ import { UserContext } from "../context/UserContext.jsx";
 function Login() {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
-  
+
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
-  
+
   const handleInputChange = (e) => {
     const { type, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [type === "email" ? "email" : "password"]: value
+      [type === "email" ? "email" : "password"]: value,
     }));
   };
-  
+
   const handleClearForm = () => {
     setFormData({
       email: "",
-      password: ""
+      password: "",
     });
   };
-  
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
       const response = await axios.post("/auth/login", formData);
       const { data } = response;
-      
+
       localStorage.setItem("token", data.token);
-      
+
       if (data.success) {
         setUser(data.user);
         navigate("/");
@@ -53,11 +53,11 @@ function Login() {
         onSubmit={handleLogin}
       >
         <h1 className="text-xl pb-10 text-darkSub">
-          Let's Connect the 
-         <span className="font-bold text-compYl"> Eloquence</span> of 
-          <span className="font-bold text-compBl"> Our Hearts</span> 
+          Let's Connect the
+          <span className="font-bold text-compYl"> Eloquence</span> of
+          <span className="font-bold text-compBl"> Our Hearts</span>
         </h1>
-        
+
         <input
           className="bg-sec text-dark rounded"
           type="email"
@@ -66,7 +66,7 @@ function Login() {
           onChange={handleInputChange}
           required
         />
-        
+
         <input
           className="bg-sec text-dark rounded"
           type="password"
@@ -75,7 +75,7 @@ function Login() {
           onChange={handleInputChange}
           required
         />
-        
+
         <div className="flex gap-1 [&>button]:flex-1">
           <button
             className="bg-compBl text-dark p-2 rounded"
@@ -84,15 +84,12 @@ function Login() {
           >
             Clear
           </button>
-          
-          <button
-            className="bg-compYl text-dark p-2 rounded"
-            type="submit"
-          >
+
+          <button className="bg-compYl text-dark p-2 rounded" type="submit">
             Submit
           </button>
         </div>
-        
+
         <p className="pt-3 text-dark">
           Don't have an account?
           <Link to="/register">

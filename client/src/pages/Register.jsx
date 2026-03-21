@@ -97,11 +97,11 @@ const Register = () => {
             placeholder="Birth date"
             value={birthDate}
             onFocus={(e) => {
-            e.currentTarget.type= "date";
-            setIsDate(true);
-            setTimeout(()=>{
+              e.currentTarget.type = "date";
+              setIsDate(true);
+              setTimeout(() => {
                 e.currentTarget.showPicker();
-            },0);
+              }, 0);
             }}
             onBlur={() => {
               if (!birthDate) {

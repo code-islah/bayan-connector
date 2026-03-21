@@ -1,10 +1,13 @@
-const Emoji = ({ onClose }) => {
+const Emoji = ({ onClose, onSelect }) => {
   return (
     <div
-      className="flex px-3 py-2 w-fit backdrop-blur-md bg-darkSub rounded gap-2 absolute bottom-0 [&>span]:p-1 [&>span]:text-xl"
+      className="flex px-3 py-2 w-fit backdrop-blur-sm bg-black/20 rounded gap-2 absolute bottom-0 [&>span]:p-1 [&>span]:text-xl"
       onClick={(e) => {
+        e.stopPropagation();
         if (e.target.tagName === "SPAN") {
-          onClose();
+        const emoji = e.target.textContent;
+        onSelect(emoji);
+        onClose();
         }
       }}
     >
