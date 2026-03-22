@@ -29,7 +29,7 @@ export const createPost = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      post
+      post,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -49,38 +49,32 @@ export const getPosts = async (req, res) => {
   }
 };
 
-
-
 // like
 export const likePost = async (req, res) => {
-  
-  try{
-  const {emoji} = req.body;
-  const post = await Post.findById(req.params.id);
-  const existing = post.likes.find((li) => {
-  return li.user.toString() === req.user.id
-  });
-  
-  if(existing) {
-    existing.emoji = emoji;
-  } else {
-    post.likes.push({
-    user: req.user.id,
-    emoji
+  try {
+    const { emoji } = req.body;
+    const post = await Post.findById(req.params.id);
+    const existing = post.likes.find((li) => {
+      return li.user.toString() === req.user.id;
     });
+
+    if (existing) {
+      existing.emoji = emoji;
+    } else {
+      post.likes.push({
+        user: req.user.id,
+        emoji,
+      });
+    }
+
+    await post.save();
+    res.json({ success: true, likes: post.likes });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-  
-  await post.save();
-  res.json({success: true,likes: post.likes});
-  } catch(err) {
-    res.status(500).json({message: err.message});
-  }
-  
 };
 
-
-
-//comment 
+//comment
 export const addComment = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -101,6 +95,20 @@ export const addComment = async (req, res) => {
     await post.populate("comments.user", "name profileImage");
 
     res.json({ success: true, post });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// get Posts by ID
+
+export const getPostsById = async (req, res) => {
+  try {
+    const posts = await Post.find({ user: req.params.id })
+      .populate("user", "name profileImage")
+      .sort({ createdAt: -1 });
+
+    res.json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -5,9 +5,9 @@ const Emoji = ({ onClose, onSelect }) => {
       onClick={(e) => {
         e.stopPropagation();
         if (e.target.tagName === "SPAN") {
-        const emoji = e.target.textContent;
-        onSelect(emoji);
-        onClose();
+          const emoji = e.target.textContent;
+          onSelect(emoji);
+          onClose();
         }
       }}
     >

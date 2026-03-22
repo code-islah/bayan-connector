@@ -1,6 +1,12 @@
 import express from "express";
 import { body } from "express-validator";
-import { reg, login, getMe, admin } from "../controllers/authController.js";
+import {
+  reg,
+  login,
+  getMe,
+  admin,
+  getUserById,
+} from "../controllers/authController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import upload from "../middleware/upload.js";
 
@@ -19,9 +25,10 @@ const validateLogin = [
   body("password").exists().withMessage("Password is required"),
 ];
 
+router.get("/me", protect, getMe);
+router.get("/:id", getUserById);
 router.post("/reg", upload.single("profileImage"), validateReg, reg);
 router.post("/login", validateLogin, login);
-router.get("/me", protect, getMe);
 router.get("/admin", protect, admin);
 
 export default router;

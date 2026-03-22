@@ -1,24 +1,21 @@
-
-
 const Feel = ({ onClick, emoji }) => {
   return (
     <button
       onClick={onClick}
       className="flex items-center justify-center text-darkSub hover:text-compSubYl"
     >
-      {!emoji ? (   
-      <span>
-        <img className="w-6 mr-1" src="/SVGs/reaction.svg" />
-      </span>
-       
-      )
-      : (<span>{emoji}</span>)
-      }
+      {!emoji ? (
+        <span>
+          <img className="w-6 mr-1" src="/SVGs/reaction.svg" />
+        </span>
+      ) : (
+        <span>{emoji}</span>
+      )}
     </button>
   );
 };
 
-const Comment = ({ onClick}) => {
+const Comment = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
