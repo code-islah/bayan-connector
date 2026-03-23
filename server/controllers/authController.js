@@ -158,13 +158,9 @@ export const getUserById = async (req, res) => {
   }
 };
 
-
-
-
-
 // send request
 
-   export const sendRequest = async (req, res) => {
+export const sendRequest = async (req, res) => {
   try {
     const sender = await User.findById(req.user.id);
     const receiver = await User.findById(req.params.id);
@@ -178,7 +174,9 @@ export const getUserById = async (req, res) => {
     }
 
     if (sender._id.toString() === receiver._id.toString()) {
-      return res.status(400).json({ message: "Cannot send request to yourself" });
+      return res
+        .status(400)
+        .json({ message: "Cannot send request to yourself" });
     }
 
     sender.friendRequests.sent.push(receiver._id);
@@ -188,17 +186,15 @@ export const getUserById = async (req, res) => {
     await receiver.save();
 
     res.json({ success: true });
-
   } catch (err) {
     console.error(" ERROR:", err);
     res.status(500).json({ message: err.message });
   }
 };
 
-
 //  accept
 
-    export const acceptRequest = async (req, res) => {
+export const acceptRequest = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     const sender = await User.findById(req.params.id);
@@ -208,63 +204,55 @@ export const getUserById = async (req, res) => {
     sender.friends.push(user._id);
 
     // remove from requests
-    user.friendRequests.received =
-      user.friendRequests.received.filter(
-        id => id.toString() !== sender._id.toString()
-      );
+    user.friendRequests.received = user.friendRequests.received.filter(
+      (id) => id.toString() !== sender._id.toString(),
+    );
 
-    sender.friendRequests.sent =
-      sender.friendRequests.sent.filter(
-        id => id.toString() !== user._id.toString()
-      );
+    sender.friendRequests.sent = sender.friendRequests.sent.filter(
+      (id) => id.toString() !== user._id.toString(),
+    );
 
     await user.save();
     await sender.save();
 
     res.json({ success: true });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
+//remove
 
-
-//remove 
-
-   export const rejectRequest = async (req, res) => {
+export const rejectRequest = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     const sender = await User.findById(req.params.id);
 
-    user.friendRequests.received =
-      user.friendRequests.received.filter(
-        id => id.toString() !== sender._id.toString()
-      );
+    user.friendRequests.received = user.friendRequests.received.filter(
+      (id) => id.toString() !== sender._id.toString(),
+    );
 
-    sender.friendRequests.sent =
-      sender.friendRequests.sent.filter(
-        id => id.toString() !== user._id.toString()
-      );
+    sender.friendRequests.sent = sender.friendRequests.sent.filter(
+      (id) => id.toString() !== user._id.toString(),
+    );
 
     await user.save();
     await sender.save();
 
     res.json({ success: true });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-
-
 
 // get getSentRequests
 
 export const getSentRequests = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-      .populate("friendRequests.sent", "name email profileImage");
+    const user = await User.findById(req.user.id).populate(
+      "friendRequests.sent",
+      "name email profileImage",
+    );
 
     res.json({
       success: true,
@@ -275,13 +263,14 @@ export const getSentRequests = async (req, res) => {
   }
 };
 
-
 // get who send reqs
 
-  export const getReceivedRequests = async (req, res) => {
+export const getReceivedRequests = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-      .populate("friendRequests.received", "name email profileImage");
+    const user = await User.findById(req.user.id).populate(
+      "friendRequests.received",
+      "name email profileImage",
+    );
 
     res.json({
       success: true,
@@ -292,14 +281,14 @@ export const getSentRequests = async (req, res) => {
   }
 };
 
-
-
 // get all friends
 
-   export const getFriends = async (req, res) => {
+export const getFriends = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-      .populate("friends", "name email profileImage");
+    const user = await User.findById(req.user.id).populate(
+      "friends",
+      "name email profileImage",
+    );
 
     res.json({
       success: true,
@@ -310,11 +299,9 @@ export const getSentRequests = async (req, res) => {
   }
 };
 
-
 // unfriend
 
-  
-   export const unfriend = async (req, res) => {
+export const unfriend = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     const friend = await User.findById(req.params.id);
@@ -325,31 +312,18 @@ export const getSentRequests = async (req, res) => {
 
     // remove friend from both users
     user.friends = user.friends.filter(
-      id => id.toString() !== friend._id.toString()
+      (id) => id.toString() !== friend._id.toString(),
     );
 
     friend.friends = friend.friends.filter(
-      id => id.toString() !== user._id.toString()
+      (id) => id.toString() !== user._id.toString(),
     );
 
     await user.save();
     await friend.save();
 
     res.json({ success: true });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-

@@ -12,7 +12,7 @@ import {
   getSentRequests,
   getReceivedRequests,
   getFriends,
-  unfriend
+  unfriend,
 } from "../controllers/authController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import upload from "../middleware/upload.js";
@@ -37,15 +37,15 @@ router.post("/reg", upload.single("profileImage"), validateReg, reg);
 router.post("/login", validateLogin, login);
 router.get("/admin", protect, admin);
 
-  router.get("/friends", protect, getFriends);
-   router.post("/:id/request", protect, sendRequest);
-   
-   router.get("/sendReqs", protect, getSentRequests);
-   router.get("/receivedReqs", protect, getReceivedRequests);
-   
-   router.put("/:id/unfriend", protect, unfriend);
+router.get("/friends", protect, getFriends);
+router.post("/:id/request", protect, sendRequest);
 
-  router.put("/:id/accept", protect, acceptRequest);
+router.get("/sendReqs", protect, getSentRequests);
+router.get("/receivedReqs", protect, getReceivedRequests);
+
+router.put("/:id/unfriend", protect, unfriend);
+
+router.put("/:id/accept", protect, acceptRequest);
 router.put("/:id/reject", protect, rejectRequest);
 router.get("/:id", getUserById);
 

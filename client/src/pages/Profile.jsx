@@ -45,16 +45,15 @@ const Profile = () => {
   }, [profile._id]);
 
   const sendFriendRequest = async (idx) => {
-  
-   const token = localStorage.getItem('token');
-   const res = await axios.post(`/auth/${idx}/request`, {},{
-  headers: { Authorization: `Bearer ${token}` }});
-   console.log(res.data);
-  }
-  
-  
-  
-  
+    const token = localStorage.getItem("token");
+    const res = await axios.post(
+      `/auth/${idx}/request`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+  };
 
   return (
     <div className="absolute inset-0 grid px-3 h-full mt-20 pb-6 overflow-y-auto">
@@ -98,15 +97,16 @@ const Profile = () => {
           </p>
         </div>
         <div className="flex gap-1 mt-2 [&>span]:flex-1 [&>span]:p-2 [&>span]:text-center [&>span]:bg-[#fccb4d] [&>span]:text-[#fff] [&>span]:rounded">
-        <span
-        onClick={()=>{
-        sendFriendRequest(profile._id);
-        }}
-        >Add Friend</span>
-        <span>Follow</span>
-        <span className="bg-compBl">Report</span>
+          <span
+            onClick={() => {
+              sendFriendRequest(profile._id);
+            }}
+          >
+            Add Friend
+          </span>
+          <span>Follow</span>
+          <span className="bg-compBl">Report</span>
         </div>
-        
       </div>
 
       {/*Posts*/}

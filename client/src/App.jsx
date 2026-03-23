@@ -18,7 +18,6 @@ import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
 import PendingFriends from "./pages/PendingFriends.jsx";
 
-
 function App() {
   return (
     <Fragment>
@@ -41,12 +40,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/sent-requests" element={<PendingFriends/>} />
+            <Route path="/sent-requests" element={<PendingFriends />} />
             <Route path="/friends" element={<Friends />} />
-            
-            
-            
-            
           </Routes>
         </BrowserRouter>
       </UserProvider>

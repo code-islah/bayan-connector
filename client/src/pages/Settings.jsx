@@ -5,14 +5,43 @@ import axios from "../API/axios.js";
 
 function Settings() {
   const navigate = useNavigate();
-
   const { user, setUser, loading } = useContext(UserContext);
   const [prof, setProf] = useState({});
 
+  const [sentReqs, setSentReqs] = useState(0);
+  const [friends, setFriends] = useState(0);
+  const [postCount, setPostCount] = useState(0);
+  
+  useEffect(() => {
+    const getFriendReqs = async () => {
+      const res = await axios.get("/auth/sendReqs");
+
+      setSentReqs(res.data.sentRequests.length);
+    };
+
+    getFriendReqs();
+  }, []);
+  
+  
+  
+   
+   useEffect(()=>{ 
+    const getFriends = async () => {
+    const res = await axios.get("/auth/friends");
+    
+    setFriends(res.data.friends.length);
+  }
+
+   getFriends();
+   },[])
+  
+
+  
   useEffect(() => {
     const fetchPosts = async (idx) => {
       const res = await axios.get(`/posts/user/${idx}`);
       setProf(res.data[0]);
+      setPostCount(res.data.length);
     };
 
     if (user._id) {
@@ -52,19 +81,36 @@ function Settings() {
         >
           My Profile
         </span>
-        <span className="text-dark">Posts</span>
+        <span className="text-dark">Posts
         <span
-        onClick={(e)=>{
-        e.stopPropagation();
-        navigate("/friends");    
-        }}
-        className="text-dark">Friends</span>
+        className="absolute ml-1 bg-red-400 text-white rounded-full aspect-square text-sm w-5 h-5 text-bold text-center"
+        >{postCount ? postCount : "0"}</span>
+        </span>
         <span
-        onClick={(e)=>{
-        e.stopPropagation();
-        navigate("/sent-requests");    
-        }}
-        className="text-dark">Send Requests</span>
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate("/friends");
+          }}
+          className="text-dark"
+        >
+          Friends
+          <span
+        className="absolute ml-1 bg-red-400 text-white rounded-full aspect-square text-sm w-5 h-5 text-bold text-center"
+        >{friends ? friends : "0"}</span>
+        </span>
+        <span
+          className="relative"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate("/sent-requests");
+          }}
+          className="text-dark"
+        >
+        Send Requests
+        <span
+        className="absolute ml-1 bg-red-400 text-white rounded-full aspect-square text-sm w-5 h-5 text-bold text-center"
+        >{sentReqs ? sentReqs : "0"}</span>
+        </span>
         <span className="text-dark">More Settings</span>
         <span
           className="text-red-500"
@@ -74,7 +120,6 @@ function Settings() {
             setUser(null);
             navigate("/login");
           }}
-          
         >
           Logout
         </span>
