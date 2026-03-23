@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://bayan-connector-backend.vercel.app/api",
+  baseURL: "https://bayan-connector.onrender.com/api",
 });
 
 API.interceptors.request.use((req) => {
