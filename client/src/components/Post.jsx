@@ -93,20 +93,25 @@ const Post = ({
       )}
       <div
         className="flex gap-3 pb-2 border-b border-b-[#f3edeb] rounded"
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate("/profile", { state: { prof } });
-        }}
       >
         <div className="relative">
           <img
+            onClick={(e) => {
+          e.stopPropagation();
+          navigate("/profile", { state: { prof } });
+        }}
             className="rounded w-10 rounded-full aspect-square outline-2 outline-[#fccb4d] outline-offset-1 object-cover"
             src={profImg}
             alt="profile"
           />
         </div>
         <div>
-          <p className="text-dark">{name}</p>
+          <p
+          onClick={(e) => {
+          e.stopPropagation();
+          navigate("/profile", { state: { prof } });
+        }}
+          className="text-dark">{name}</p>
           <p className="text-darkSub font-light text-sm">User</p>
         </div>
       </div>
