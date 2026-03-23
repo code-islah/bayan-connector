@@ -4,8 +4,9 @@ export const getMessages = async (req, res) => {
   try {
     const { conversationId } = req.params;
 
-    const messages = await Message.find({ conversationId })
-      .sort({ createdAt: 1 });
+    const messages = await Message.find({ conversationId }).sort({
+      createdAt: 1,
+    });
 
     res.json(messages);
   } catch (err) {
@@ -24,7 +25,7 @@ export const sendMessage = async (req, res) => {
     const message = await Message.create({
       conversationId,
       sender: req.user.id,
-      text
+      text,
     });
 
     res.json(message);

@@ -1,17 +1,13 @@
-
-import { useEffect, useState, useRef,useContext } from "react";
-import { UserContext } from "../context/UserContext.jsx";
+import { useEffect, useState, useRef } from "react";
+import {useLocation} from "react-router-dom";
 import axios from "../API/axios";
 import { socket } from "../API/socket";
 
 const Chat = () => {
 
-  const {user} = useContext(UserContext);
+  const location = useLocation();
+  const {user, receiver} = location.state || {};
   
-  const receiver = {
-  name: "Md Alamin",
-  _id: "69bdc37e78f12b7624409189"
-  };
   const [conversationId, setConversationId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
@@ -94,7 +90,7 @@ const Chat = () => {
       {/* HEADER */}
       <div className="p-3 border-b border-b-[#f5f0ee] flex items-center gap-4 shadow">
         <img
-          src={user?.profileImage}
+          src={receiver?.profileImage}
           className="w-10 h-10 aspect-square rounded-full object-cover outline-[#29B2B8] outline-3 outline-offset-2"
         />
         <p>{receiver?.name}</p>
@@ -102,7 +98,7 @@ const Chat = () => {
 
       {/* MESSAGES */}
       <div className="flex-1 overflow-y-auto p-2">
-        {messages.map((m, i) => (
+        {messages.length !== 0 ? messages.map((m, i) => (
           <div
             key={i}
             ref={scrollRef}
@@ -114,12 +110,13 @@ const Chat = () => {
           >
             {m.text}
           </div>
-        ))}
+        )) : <span className="text-sm text-thin text-center block pb-2 text-darkSub">Say Salam to your friend!</span>}
       </div>
 
       {/* INPUT */}
       <div className="flex p-2 gap-2">
         <input
+          placeholder="Write your message"
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="flex-1 rounded border border-[#29B2B8] p-2"

@@ -105,7 +105,7 @@ function Settings() {
           }}
           className="text-dark"
         >
-        Send Requests
+        Sent Requests
         <span
         className="absolute ml-1 bg-red-400 text-white rounded-full aspect-square text-sm w-5 h-5 text-bold text-center"
         >{sentReqs ? sentReqs : "0"}</span>

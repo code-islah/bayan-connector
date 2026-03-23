@@ -10,13 +10,13 @@ export const createOrGetConversation = async (req, res) => {
 
     // 🔍 check existing
     let conversation = await Conversation.findOne({
-      members: { $all: [req.user.id, receiverId] }
+      members: { $all: [req.user.id, receiverId] },
     });
 
     // 🆕 create if not exists
     if (!conversation) {
       conversation = await Conversation.create({
-        members: [req.user.id, receiverId]
+        members: [req.user.id, receiverId],
       });
     }
 

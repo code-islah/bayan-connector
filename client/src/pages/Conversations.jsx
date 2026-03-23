@@ -1,9 +1,12 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useContext } from "react";
 import axios from "../API/axios.js";
-
+  import { useNavigate } from "react-router-dom";
+  import {UserContext} from "../context/UserContext.jsx";
 
 function Conversations() {
 
+   const {user} = useContext(UserContext);
+   const navigate = useNavigate();
    const [friends, setFriends] = useState([]);
  
    useEffect(()=>{ 
@@ -32,7 +35,7 @@ function Conversations() {
     <Fragment>
       <div className="h-screen mt-18">
      
-      <h1 className="pl-3 pb-3 text-darkSub text-2xl">My Friends:</h1>
+      <h1 className="pl-3 pb-3 text-darkSub text-2xl">Conversations:</h1>
       {friends.length !== 0 ? friends.map((fr,idx) => {
       return <div
       className="mx-3 mb-1 bg-sec h-fit rounded text-darkSub shadow"
@@ -52,7 +55,14 @@ function Conversations() {
       handleUnfriend(fr._id);
       }}
       className="w-6" src="/SVGs/cancelFriend.svg" alt="Remove" />
-      <img className="w-6" src="/SVGs/sendMsg.svg" alt="Send" />
+      <img
+      onClick={(e)=>{
+      e.stopPropagation();
+      navigate("/chat",{state:{
+      user: user,
+      receiver: fr}});
+      }}
+      className="w-6" src="/SVGs/sendMsg.svg" alt="Send" />
       </div>
       </div>
 
