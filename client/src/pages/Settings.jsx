@@ -23,7 +23,6 @@ function Settings() {
   }, []);
   
   
-  
    
    useEffect(()=>{ 
     const getFriends = async () => {

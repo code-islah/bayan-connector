@@ -17,6 +17,8 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
 import PendingFriends from "./pages/PendingFriends.jsx";
+import Chat from "./pages/Chat.jsx";
+
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/sent-requests" element={<PendingFriends />} />
             <Route path="/friends" element={<Friends />} />
+            
+            <Route path="/chat" element={<Chat />} />
           </Routes>
         </BrowserRouter>
       </UserProvider>

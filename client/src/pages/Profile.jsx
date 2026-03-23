@@ -56,7 +56,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="absolute inset-0 grid px-3 h-full mt-20 pb-6 overflow-y-auto">
+    <div className="absolute inset-0 grid px-3 h-full mt-18 pb-6 overflow-y-auto">
       <div>
         <div className="flex px-2 gap-3 rounded shadow relative z-[10]">
           <div
