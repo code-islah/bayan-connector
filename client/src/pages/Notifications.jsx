@@ -74,7 +74,7 @@ function Notifications() {
       ) : (
         <div>
           <h1 className="text-center text-dark">
-            You haven't sent any friend requests yet!
+            You don't have any notifications to show!
           </h1>
         </div>
       )}
