@@ -34,7 +34,7 @@ const io = new Server(server,{
  cors: {
   origin: "https://bayan-connector.vercel.app",
   methods: ["GET", "POST"],
- }
+ },
    transports: ["websocket"],
 });
 
