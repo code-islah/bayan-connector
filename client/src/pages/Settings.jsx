@@ -2,11 +2,15 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "../API/axios.js";
+import useTitle from '../hooks/useTitle';
+
+
 
 function Settings() {
   const navigate = useNavigate();
   const { user, setUser, loading } = useContext(UserContext);
   const [prof, setProf] = useState({});
+  useTitle('Settings');
 
   const [sentReqs, setSentReqs] = useState(0);
   const [friends, setFriends] = useState(0);

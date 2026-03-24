@@ -4,6 +4,8 @@ import axios from "../API/axios.js";
 import CreatePost from "../components/CreatePost.jsx";
 import Post from "../components/Post.jsx";
 import Comments from "../components/Comment.jsx";
+import useTitle from '../hooks/useTitle';
+
 
 const Home = () => {
   const { user } = useContext(UserContext);
@@ -12,6 +14,7 @@ const Home = () => {
   const [viewComment, setViewComment] = useState(null);
   const [viewEmoji, setViewEmoji] = useState(null);
   const [refreshPosts, setRefreshPosts] = useState(false);
+  useTitle("Bayan Connector | Speak Clearly Connect Deeply");
 
   useEffect(() => {
     const fetchPosts = async () => {

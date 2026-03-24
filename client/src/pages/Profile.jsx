@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "../API/axios.js";
 import { differenceInYears } from "date-fns";
+import useTitle from '../hooks/useTitle';
 
 const Profile = () => {
   const { state } = useLocation();
@@ -10,6 +11,8 @@ const Profile = () => {
   const [age, setAge] = useState(0);
   const [profile, setProfile] = useState({});
   const [viewPost, setViewPost] = useState(false);
+ 
+  useTitle(profile.name ? profile.name : "Profile");
 
   useEffect(() => {
     const fetchUser = async (idx) => {

@@ -2,13 +2,15 @@ import { Fragment, useState, useEffect, useContext } from "react";
 import axios from "../API/axios.js";
   import { useNavigate } from "react-router-dom";
   import {UserContext} from "../context/UserContext.jsx";
+  import useTitle from '../hooks/useTitle';
 
 function Conversations() {
 
    const {user} = useContext(UserContext);
    const navigate = useNavigate();
    const [friends, setFriends] = useState([]);
- 
+   useTitle("Conversations");
+    
    useEffect(()=>{ 
     const getFriends = async () => {
     const res = await axios.get("/auth/friends");

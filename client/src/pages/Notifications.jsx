@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "../API/axios.js";
+import useTitle from '../hooks/useTitle';
 
 function Notifications() {
   const [incomings, setIncomings] = useState([]);
   const [toggleEffect, setToggleEffect] = useState(false);
+  
+  useTitle("Notifications");
 
   const accept = async (idx) => {
     const res = await axios.put(`/auth/${idx}/accept`, {});

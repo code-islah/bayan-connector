@@ -2,12 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import {useLocation} from "react-router-dom";
 import axios from "../API/axios";
 import { socket } from "../API/socket";
+import useTitle from '../hooks/useTitle';
 
 const Chat = () => {
 
   const location = useLocation();
   const {user, receiver} = location.state || {};
-  
+  useTitle(receiver ? receiver : "Chat");
   const [conversationId, setConversationId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");

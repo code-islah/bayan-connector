@@ -2,11 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import axios from "../API/axios.js";
 import { UserContext } from "../context/UserContext.jsx";
+import useTitle from '../hooks/useTitle';
 
 function Login() {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
-
+  useTitle('Login');
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",

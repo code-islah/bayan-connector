@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "../API/axios.js";
+import useTitle from '../hooks/useTitle';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -9,6 +10,8 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  
+  useTitle("Register");
 
   const [image, setImage] = useState(null);
 

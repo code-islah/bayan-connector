@@ -1,9 +1,10 @@
 import { Fragment, useState, useEffect } from "react";
 import axios from "../API/axios.js";
+import useTitle from '../hooks/useTitle';
 
 function PendingFriends() {
   const [friends, setFriends] = useState([]);
-
+  useTitle("Pending Friend Requests");
   useEffect(() => {
     const getFriendReqs = async () => {
       const res = await axios.get("/auth/sendReqs");

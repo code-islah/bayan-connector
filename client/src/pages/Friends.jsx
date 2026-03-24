@@ -1,8 +1,10 @@
 import { Fragment, useState, useEffect } from "react";
+import useTitle from '../hooks/useTitle';
 import axios from "../API/axios.js";
 
 function Friends() {
   const [friends, setFriends] = useState([]);
+  useTitle("My Friends");
 
   useEffect(() => {
     const getFriends = async () => {
