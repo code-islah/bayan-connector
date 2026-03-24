@@ -3,10 +3,74 @@ import { UserContext } from "../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "../API/axios.js";
 import useTitle from '../hooks/useTitle';
-
+import { motion, useMotionValue, animate } from "framer-motion";
 
 
 function Settings() {
+
+  const [newName, setNewName] = useState("");
+  const [newImage, setNewImage] = useState(null);
+  
+  const handleUpdate = async () => {
+    
+    const formData = new FormData();
+    formData.append("name", newName);
+  if (newImage) formData.append("image", newImage);
+  
+   const token = localStorage.getItem("token");
+    
+    try {
+    const res = await axios.put("/auth/update", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
+      }
+    });
+
+    console.log(res.data);
+
+  } catch (err) {
+    console.error(err);
+  }    
+  }
+  
+  const [showMoreSettings, setShowMoreSettings] = useState(false);
+  const y = useMotionValue(window.innerHeight);
+
+// animate IN when opened
+useEffect(() => {
+  if (showMoreSettings) {
+    animate(y, 0, {
+      type: "spring",
+      stiffness: 150,
+      damping: 25,
+    });
+  }
+}, [showMoreSettings]);
+
+const handleDragEnd = (event, info) => {
+  const shouldClose =
+    info.offset.y > 150 || info.velocity.y > 800;
+
+  if (shouldClose) {
+    animate(y, window.innerHeight, {
+      type: "spring",
+      stiffness: 200,
+      damping: 30,
+      onComplete: () => {
+        setShowMoreSettings(false);
+        y.set(window.innerHeight); // reset for next open
+      },
+    });
+  } else {
+    animate(y, 0, {
+      type: "spring",
+      stiffness: 300,
+      damping: 30,
+    });
+  }
+};
+  
   const navigate = useNavigate();
   const { user, setUser, loading } = useContext(UserContext);
   const [prof, setProf] = useState({});
@@ -51,8 +115,29 @@ function Settings() {
       fetchPosts(user._id);
     }
   }, [user]);
+  
+  
+  const handleDeleteAccount = async () => {
+  const token = localStorage.getItem('token');
+  if (!window.confirm("Are you sure? This cannot be undone.")) return;
+  try {
+    await axios.delete("/auth/delete", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-  if (!prof) return;
+    // logout user
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+
+  } catch (err) {
+    console.error(err);
+  }
+};
+  
+  
+
 
   return (
     <div className="grid h-screen mt-20 relative">
@@ -102,19 +187,75 @@ function Settings() {
         >{friends ? friends : "0"}</span>
         </span>
         <span
-          className="relative"
+          className="relative text-dark"
           onClick={(e) => {
             e.stopPropagation();
             navigate("/sent-requests");
           }}
-          className="text-dark"
+          
         >
         Sent Requests
         <span
         className="absolute ml-1 bg-red-400 text-white rounded-full aspect-square text-sm w-5 h-5 text-bold text-center"
         >{sentReqs ? sentReqs : "0"}</span>
         </span>
-        <span className="text-dark">More Settings</span>
+        <span
+        onClick={()=>{
+        setShowMoreSettings(true);
+        }}
+        className="text-dark">More Settings</span>
+        
+        {showMoreSettings && (
+  <motion.div
+    drag="y"
+    dragConstraints={{ top: 0, bottom: 0 }}
+    style={{ y }}
+    onDragEnd={handleDragEnd}
+    initial={{ y: "100%" }}
+    animate={{ y: 0 }}
+    exit={{ y: "100%" }}
+    className="bg-sec border border-[#787f8d] shadow z-[100] w-full h-[90vh] fixed bottom-0 left-0 rounded-t-2xl p-4"
+  >
+    {/* Drag handle */}
+    <div className="w-12 h-1 bg-dark mx-auto mb-4 rounded-full" />
+
+    <p className="text-dark">More Settings Content</p>
+    <div className="mt-3 [&>span]:bg-white [&>span]:rounded grid gap-3 [&>span]:px-3 [&>span]:py-2 [&>span]:text-[#393e4b] [&>span]:shadow">
+    <div className="flex gap-3 items-center">
+     <img
+     className="outline-[#fff] shadow-md outline-2 w-10 aspect-square object-cover rounded-full"
+     src={user?.profileImage || "/avator.jpg"}
+      alt="Profile" />
+     <span className="text-dark relative">Change Profile Picture
+     <input
+     onChange={(e)=>{
+     setNewImage(e.target.files[0]);
+     }}
+     type="file" className="absolute inset-0 opacity-0" />
+     </span>
+     </div>
+     <input
+     onChange={(e)=>{
+     setNewName(e.target.value);
+     }}
+     className="px-3 py-2 bg-white shadow rounded" type="text" placeholder="Change User Name" />
+     <span>Edit/Add Status</span>
+     <span>Edit Birth Date</span>
+     <div className="flex gap-1 pt-2 [&>button]:flex-1 [&>button]:px-3 [&>button]:py-2 [&>button]:text-[#393e4b]">
+     <button className="bg-compBl rounded">Cancel</button>
+     <button
+     onClick={handleUpdate}
+     className='bg-compYl rounded'>Confirm</button>
+     </div>
+     <span
+     onClick={()=>{
+     handleDeleteAccount();
+     }}
+     className='!bg-red-400 text-sec'>Delete Account</span>
+    </div>
+  </motion.div>
+)}
+        
         <span
           className="text-red-500"
           onClick={(e) => {

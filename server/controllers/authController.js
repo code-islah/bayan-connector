@@ -1,4 +1,7 @@
 import User from "../models/User.js";
+import Post from "../models/Post.js";
+import Message from "../models/Message.js";
+import Conversation from "../models/Conversation.js";
 import generateToken from "../utils/generateToken.js";
 import cloudinary from "../config/cloudinaryConfig.js";
 import { validationResult } from "express-validator";
@@ -327,3 +330,87 @@ export const unfriend = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+// delete user
+   export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // 🗑 delete user
+    await User.findByIdAndDelete(userId);
+
+    // 🗑 delete posts
+    await Post.deleteMany({ user: userId });
+
+    // 🗑 delete messages
+    await Message.deleteMany({ sender: userId });
+
+    // 🧹 remove user from conversations
+    await Conversation.updateMany(
+      { members: userId },
+      { $pull: { members: userId } }
+    );
+
+    res.json({ message: "Account deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+  
+
+
+// update profile
+
+   export const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    // update name
+    if (req.body.name) {
+      user.name = req.body.name;
+    }
+
+    // upload image if exists
+    if (req.file) {
+
+  //  delete old image if exists
+  if (user.profileImageId) {
+    await cloudinary.uploader.destroy(user.profileImageId);
+  }
+
+  //  upload new image
+  const result = await cloudinary.uploader.upload(req.file.path, {
+    folder: "profiles",
+  });
+
+  user.profileImage = result.secure_url;
+  user.profileImageId = result.public_id;
+}
+
+    await user.save();
+
+    res.json({
+      success: true,
+      user
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

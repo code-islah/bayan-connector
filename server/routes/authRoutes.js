@@ -13,6 +13,8 @@ import {
   getReceivedRequests,
   getFriends,
   unfriend,
+  deleteAccount,
+  updateProfile
 } from "../controllers/authController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import upload from "../middleware/upload.js";
@@ -37,6 +39,8 @@ router.post("/reg", upload.single("profileImage"), validateReg, reg);
 router.post("/login", validateLogin, login);
 router.get("/admin", protect, admin);
 
+router.put("/update", protect, upload.single("image"), updateProfile);
+router.delete('/delete', protect, deleteAccount);
 router.get("/friends", protect, getFriends);
 router.post("/:id/request", protect, sendRequest);
 
