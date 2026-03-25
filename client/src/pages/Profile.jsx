@@ -13,6 +13,24 @@ const Profile = () => {
   const [viewPost, setViewPost] = useState(false);
  
   useTitle(profile.name ? profile.name : "Profile");
+  
+  
+  const handleDelete = async (postId) => {
+  
+  console.log(postId)
+  
+  if (!window.confirm("Delete this post?")) return;
+  
+  try {
+    await axios.delete(`/posts/${postId}`);
+    
+    setPosts(prev => prev.filter(post => post._id !== postId));
+
+  } catch (err) {
+    console.error(err);
+  }
+};
+  
 
   useEffect(() => {
     const fetchUser = async (idx) => {
@@ -118,9 +136,19 @@ const Profile = () => {
           posts.map((post, idx) => {
             return (
               <div
-                className={`${viewPost ? "h-full" : "h-fit"} bg-sec [&>*]:p-2 shadow-sm rounded`}
+                className={`relative ${viewPost ? "h-full" : "h-fit"} bg-sec [&>*]:p-2 shadow-sm rounded`}
                 key={post + idx}
               >
+              
+              {/*remove button */}
+              <div
+              onClick={()=>{
+              handleDelete(post._id);
+              }}
+              className="absolute text-3xl text-red-300 top-0 right-1">
+              &times;
+              </div>
+              
                 <div className="flex gap-3 items-center border-b border-b-[#d3c2b3]">
                   {profile.profileImage ? (
                     <img

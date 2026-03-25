@@ -7,6 +7,7 @@ export const createPost = async (req, res) => {
     const { content, county, emoji } = req.body;
 
     let imgUrl = "";
+    let imgUrlId = "";
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: "posts",
@@ -17,6 +18,7 @@ export const createPost = async (req, res) => {
         ],
       });
       imgUrl = result.secure_url;
+      imgUrlId = result.public_id;
     }
 
     const post = await Post.create({
@@ -25,6 +27,7 @@ export const createPost = async (req, res) => {
       county,
       emoji,
       image: imgUrl,
+      imageId: imgUrlId,
     });
 
     res.status(200).json({
@@ -113,3 +116,54 @@ export const getPostsById = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+
+     export const deletePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    //  post not found
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    //  check ownership
+    if (post.user.toString() !== req.user.id) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    // delete image from Cloudinary (if exists)
+    if (post.imageId) {
+      await cloudinary.uploader.destroy(post.imageId);
+    }
+
+    // delete post
+    await post.deleteOne();
+
+    res.json({ message: "Post deleted" });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
