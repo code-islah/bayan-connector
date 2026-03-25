@@ -48,15 +48,6 @@ One-to-one messaging
 
 Socket.IO integration
 
-Typing indicator
-
-Seen status (basic)
-
-
-🟢 Online Status
-
-Shows active users using sockets
-
 
 🧾 Profile Management
 
