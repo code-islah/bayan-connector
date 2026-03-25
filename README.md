@@ -111,8 +111,7 @@ Backend: Render
 ⚙️ Installation
 
 1. Clone the repository
-
-git clone https://github.com/your-username/bayan-connector.git
+git clone https://github.com/code-islah/bayan-connector.git
 cd bayan-connector
 
 2. Install dependencies
