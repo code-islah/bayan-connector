@@ -7,7 +7,7 @@ A modern full-stack social media web application built with React, Node.js, Expr
 
 🚀 Live Demo
 
-🔗 https://tazkiya-store.vercel.app/ (replace with your actual link if needed)
+🔗 https://bayan-connector.vercel.app/
 
 
 ---
