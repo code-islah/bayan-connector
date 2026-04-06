@@ -80,7 +80,7 @@ const CreatePost = ({ onPostCreated }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative h-[140px] p-2 grid mx-2 shadow-sm rounded"
+      className="relative h-[140px] p-2 grid mx-2 shadow-sm rounded mt-3"
     >
       <textarea
         value={content}

@@ -238,3 +238,18 @@ textarea:focus {
 nav {
   background: var(--primary);
 }
+
+
+@media (min-width: 768px) {
+  body > div { 
+    max-width: 750px;
+    margin: 0 auto
+  }
+
+  nav {
+    max-width: 750px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+}
